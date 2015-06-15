@@ -1,2 +1,6 @@
 
 Thread.h
+
+*.o
+
+main
