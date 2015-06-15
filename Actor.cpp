@@ -1,6 +1,5 @@
-//#include "stdafx.h"
 #include "Actor.h"
-//#include "windows.h"
+
 std::atomic<int> Active::m_GlobalActiveID(0);
 
 Active::Active(){}
@@ -55,7 +54,6 @@ bool Active::IfEmpty(){
 }
 
 void Active::Consume(){
-	//m_IOMutex.lock();
     std::unique_lock<std::mutex> lock(m_IOMutex);
 	while(m_Queue.empty()){
 		m_ConditionVar.wait(lock);
@@ -71,7 +69,6 @@ void Active::Consume(){
 		m_Callback(pBuffer);
 		--m_PendingWorkNum;
 		if (pBuffer){
-			//m_pBufferPool.ReleaseObejct(pBuffer);
             delete pBuffer;
 		}
 	}
@@ -83,7 +80,6 @@ void Active::Stop(){
 
 void Active::ReleaseBuffer(Buffer*& pBuffer){
 	if (NULL != pBuffer){
-		//m_pBufferPool.ReleaseObejct(pBuffer);
 		pBuffer = NULL;
 	}
 }
@@ -103,7 +99,6 @@ void Active::RunWithUpdate(){
 
 void Active::Start(){
     m_Thread = std::thread(&Active::Run, this);
-	//m_ThreadID = get_native_thread_id(m_Thread);
 }
 
 void Active::SetThreadStartCallback(BeginInThreadCallback pBeginInThreadCallback){
